@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="rejection_form" model="ir.ui.view">
+            <field name="name">rejection.reason.form</field>
+            <field name="model">rejection.reason</field>
+            <field name="arch" type="xml">
+                <form>
+
+                    <group>
+                        <group>
+                            <field name="reject_reasons"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="action_create_field" string="Confirm" type="object" class="oe_highlight"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="oe_highlight"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!--        this action will execute when we press Reject button in to_be_approved states-->
+        <record id="action_rejection" model="ir.actions.act_window">
+            <field name="name">Rejection</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rejection.reason</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>    <!-- target field will make form show as a pop-up -->
+        </record>
+    </data>
+</odoo>

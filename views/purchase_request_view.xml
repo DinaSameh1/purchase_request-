@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="purchase_request_form" model="ir.ui.view">
+            <field name="name">purchase.request.form</field>
+            <field name="model">purchase.request</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_submit" string="Submit" type="object" class="oe_highlight" states="draft"/>
+                        <button name="action_cancel" string="Cancel" type="object" class="oe_highlight" states="draft"/>
+                        <button name="action_approve" string="Approve" type="object" class="oe_highlight"
+                                states="to_be_approved"/>
+<!--                        this button will execute action_rejection from wizards-->
+                        <button name="%(purchase_request.action_rejection)d" string="Reject" type="action"
+                                class="oe_highlight" states="to_be_approved"/>
+<!--                        this button will execute action_create_purchase_order function-->
+                        <button name="action_create_purchase_order" string="Create PO" type="object"
+                                class="oe_highlight"
+                                states="approve"/>
+                        <button name="action_reset_to_default" string="Reset to Default" type="object"
+                                class="oe_highlight" states="cancel"/>
+                        <field name="state" widget="statusbar" nolabel="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_po" type="object" class="oe_stat_button" icon="fa-star">
+                                <field name="po_count" widget="stateinfo"/>
+                                <span>Orders</span>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="requested_by_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="start_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="end_date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="partner_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="partner_ref" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="currency_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            <group>
+                                <field name="reject_reason" attrs="{'readonly': [('state', '=', 'reject')]}"
+                                       states="reject"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Purchase Lines" name="purchase_lines">
+                                <field name="request_lines_ids">
+                                    <tree editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="product_description"/>
+                                        <field name="product_quantity"/>
+                                        <field name="cost_price"/>
+                                        <field name="total"/>
+                                    </tree>
+                                    <form>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="product_description"/>
+                                            <field name="product_quantity"/>
+                                            <field name="cost_price"/>
+                                            <field name="total"/>
+                                        </group>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group>
+                            <field name="total_price"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_purchase_request" model="ir.actions.act_window">
+            <field name="name">Purchase Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">purchase.request</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="menu_purchase_request" name="Purchase Request"
+                  parent="purchase.menu_procurement_management" sequence="4"
+                  action="action_purchase_request"
+        />
+    </data>
+</odoo>

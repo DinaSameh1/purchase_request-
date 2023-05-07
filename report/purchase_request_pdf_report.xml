@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Define the template -->
+    <template id="report_purchase_request">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <br/>
+                    <br/>
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <!-- Print the request information -->
+                        <h2>Purchase Request</h2>
+                        <table class="table table-sm o_main_table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Request name:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Requested By:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.requested_by_id"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Start Date:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.start_date"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>End Date:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.end_date"/>
+                                    </td>
+                                </tr>
+                                <tr t-if="doc.state == 'reject'">
+                                    <td>
+                                        <strong>Rejection Reason:</strong>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.reject_reason"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="doc.reject_reasons"/>
+                                    </td>
+                                </tr>
+                                <tbody>
+                                    <!-- Loop over the Rejection Reasons -->
+                                    <t t-foreach="doc.reject_reasons" t-as="line">
+                                        <tr>
+                                            <!-- Print the fields of each line -->
+                                            <td>
+                                                <span t-field="line.reject_reason"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </tbody>
+                        </table>
+                        <!-- Print the orderlines -->
+                        <h3>Orderlines</h3>
+                        <table class="table table-sm o_main_table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Product Description</th>
+                                    <th>Product Quantity</th>
+                                    <th>Cost Price</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Loop over the orderlines -->
+                                <t t-foreach="doc.line_ids" t-as="line">
+                                    <tr>
+                                        <!-- Print the fields of each line -->
+                                        <td>
+                                            <span t-field="line.product_id"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="line.product_description"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.product_quantity"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.cost_price"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-field="line.total"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <tr>
+                            <td>
+                                <strong>Total Cost</strong>
+                            </td>
+                            <td>
+                                <span t-field="doc.total_price"/>
+                            </td>
+                        </tr>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
+
