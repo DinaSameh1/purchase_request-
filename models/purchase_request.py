@@ -48,8 +48,7 @@ class PurchaseRequest(models.Model):
         template = self.env.ref('purchase_request.purchase_request_mail_template')
         for record in self:
             if record.requested_by_id.email:
-                email_values = {'subject': 'Purchases Request',
-                                'email_from': record.env.user.email,
+                email_values = {'email_from': record.env.user.email,
                                 'email_to': record.env.ref('purchase.group_purchase_manager')}
                 template.send_mail(record.id, force_send=True, email_values=email_values)
             record.state = 'approve'
