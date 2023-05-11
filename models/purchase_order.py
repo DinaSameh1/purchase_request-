@@ -12,7 +12,7 @@ class OrderLine(models.Model):
     _inherit = 'purchase.order.line'
 
     request_line_id = fields.Many2one('purchase.request.line')
-    product_quantity = fields.Integer(string='Quantity', default='1')
+    
     @api.constrains('product_qty')
     def cons_qty(self):
         qty_sum = 0
